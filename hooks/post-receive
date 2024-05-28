@@ -6,11 +6,15 @@ cd ..
 
 service="$(basename "${PWD}")"
 
-docker run \
-    --volume /var/run/docker.sock:/var/run/docker.sock \
-    --volume "${PWD}:/workspace" \
-    --workdir /workspace \
-    buildpacksio/pack build --builder=heroku/builder:22 "${service}"
+if [ -f ./Dockerfile ]; then
+    docker build --tag "${service}" .
+else
+    docker run \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
+        --volume "${PWD}:/workspace" \
+        --workdir /workspace \
+        buildpacksio/pack build --builder=heroku/builder:22 "${service}"
+fi
 
 cd ../../
 
