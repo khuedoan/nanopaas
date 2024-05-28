@@ -4,7 +4,7 @@ set -eu
 
 cd ..
 
-service="$(basename ${PWD})"
+service="$(basename "${PWD}")"
 
 cd ../../
 
