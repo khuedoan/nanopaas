@@ -2,15 +2,19 @@
 
 Self-hosting your own code shouldn't be complicated if you don't need advanced features.
 
-You've developed a small application and now you want to share it with the world.
-You have a Linux machine with Docker installed. What's next?
+You've developed a small application and now you want to share it with the world, what's next?
 
-## Server requirements
+## Requirements
 
-- A server with public IP (most cloud providers offer a free tier with a small server)
+Application:
+
+- Written in one of the supported languages: Go, Java, Node.js, PHP, Python, Ruby, Scala
+
+Server:
+
+- A Linux server with public IP (most cloud providers offer a free tier with a small server)
 - A domain pointed to that IP (see below if you just need a free one for development)
-- SSH access
-- Software: `git`, `docker`
+- Packages: `git`, `docker`
 - Firewall ports:
 
 | Port | Protocol | Description |
@@ -18,10 +22,6 @@ You have a Linux machine with Docker installed. What's next?
 | 22   | TCP      | SSH         |
 | 80   | TCP      | HTTP        |
 | 443  | TCP      | HTTPS       |
-
-## Application requirements
-
-- Written in one of the supported languages: Go, Java, Node.js, PHP, Python, Ruby, Scala
 
 ## Usage
 
@@ -59,10 +59,20 @@ git push deploy
 
 Wanna deploy another app? Just repeat steps 2 to 5 :)
 
+## How it works
+
+- When you create a new application with `./create.sh`, it initializes an empty repo with some configuration, most notably setting `core.hookPath` to the [`./hooks`](./hooks) directory.
+- When you set up a new `deploy` git remote and push, git on the server automatically triggers the [`./hooks/post-receive`](./hooks/post-receive) hook (see also `man githooks`).
+- The `post-receive` hook builds a container image from your app source code, automatically detecting the language and creating a fairly optimized build (thanks to Buildpacks).
+- Then the hook continues to start/restart containers that have changed.
+- The included Traefik reverse proxy automatically requests a valid TLS certificate from Let's Encrypt, using the HTTP-01 challenge.
+
 ## Backup
 
 You can use `rsync` to copy the entire `./data` directory to another server or your local machine, and you should be good to go.
 You should also create a cron job on your server to perform this task periodically.
+
+If your data is not too important and you don't need an offsite backup, using your cloud provider's disk snapshot feature is a viable option too.
 
 ## FAQ
 
