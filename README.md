@@ -48,7 +48,7 @@ vim compose.yaml
 4. Go back to you application repo and add the server to your git remote:
 
 ```sh
-git remote add deploy git@<MY_SERVER>:</path/to/micropaas/data/source/example-service>
+git remote add deploy <MY_USERNAME>@<MY_SERVER>:</path/to/micropaas/data/source/example-service>
 ```
 
 5. Deploy!

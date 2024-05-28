@@ -2,17 +2,24 @@ services:
   reverse-proxy:
     image: docker.io/library/traefik:v3.0
     command:
-      # TODO SSL with HTTP-01
-      - --api.insecure=true
       - --providers.docker
+      - --entryPoints.web.address=:80
+      - --entryPoints.web.http.redirections.entryPoint.to=websecure
+      - --entryPoints.web.http.redirections.entryPoint.scheme=https
+      - --entryPoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.letsencrypt.acme.storage=/certificates/acme.json
     ports:
       - 80:80
-      - 8080:8080
+      - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/certificates:/certificates
 
   example-service:
     image: example-service
     labels:
-      - traefik.http.routers.example-service.rule=Host(`example.127-0-0-1.nip.io`)
+      - traefik.http.routers.example-service.rule=Host(`example-nanopaas.duckdns.org`)
       - traefik.http.services.example-service.loadbalancer.server.port=8080
+      - traefik.http.routers.example-service.tls.certresolver=letsencrypt
