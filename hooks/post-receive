@@ -6,7 +6,8 @@ cd ..
 
 service="$(basename "${PWD}")"
 
+pack build --builder=heroku/builder:22 "${service}"
+
 cd ../../
 
-docker compose build "${service}"
-docker compose up --detach
+docker compose up --detach --remove-orphans

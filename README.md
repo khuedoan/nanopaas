@@ -1,6 +1,6 @@
 # NanoPaaS
 
-Hosting your own code shouldn't be complicated.
+Self-hosting your own code shouldn't be complicated if you don't need advanced features.
 
 You've developed a small application and now you want to share it with the world.
 You have a Linux machine with Docker installed. What's next?
@@ -8,7 +8,8 @@ You have a Linux machine with Docker installed. What's next?
 ## Server requirements
 
 - Public IP
-- A domain pointed to that IP.
+- A domain pointed to that IP
+- SSH access
 - Software: `git`, `docker`
 - Firewall ports:
 
@@ -20,40 +21,42 @@ You have a Linux machine with Docker installed. What's next?
 
 ## Application requirements
 
-- A `Dockerfile` to build your app
+- Written in one of the supported languages: Go, Java, Node.js, PHP, Python, Ruby, Scala
 
 ## Usage
 
-Fork this repository (optional but recommended) and clone it to your server:
+1. Fork this repository (optional but recommended) and clone it to your server:
 
 ```sh
 git clone git@github.com/<MY_USERNAME>/nanopaas
 cd nanopaas
 ```
 
-Initialize your first project:
+2. Initialize your first project:
 
 ```sh
 ./create.sh example-service master
 ```
 
-Add the service to the compose file (an entry for `example-service` is already present, you just need to update the domain and port):
+3. Add the service to the compose file (an entry for `example-service` is already present, you just need to update the domain and port):
 
 ```sh
 vim compose.yaml
 ```
 
-Add the server to your git remote:
+4. Go back to you application repo and add the server to your git remote:
 
 ```sh
 git remote add deploy git@<MY_SERVER>:</path/to/micropaas/data/source/example-service>
 ```
 
-Deploy!
+5. Deploy!
 
 ```sh
 git push deploy
 ```
+
+Wanna deploy another app? Just repeat step 2 to 5 :)
 
 ## Backup
 

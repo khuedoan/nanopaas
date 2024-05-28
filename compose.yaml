@@ -1,8 +1,10 @@
 services:
   reverse-proxy:
     image: docker.io/library/traefik:v3.0
-    # TODO SSL with HTTP-01
-    command: --api.insecure=true --providers.docker
+    command:
+      # TODO SSL with HTTP-01
+      - --api.insecure=true
+      - --providers.docker
     ports:
       - 80:80
       - 8080:8080
@@ -10,7 +12,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   example-service:
-    build: ./data/source/example-service
+    image: example-service
     labels:
       - traefik.http.routers.example-service.rule=Host(`example.127-0-0-1.nip.io`)
-      - traefik.http.services.example-service.loadbalancer.server.port=8080 # Optional if you only have one port in Dockerfile EXPOSE
+      - traefik.http.services.example-service.loadbalancer.server.port=8080
