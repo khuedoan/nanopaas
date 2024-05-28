@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -eu
+
+cd ..
+
+service="$(basename ${PWD})"
+
+cd ../../
+
+docker compose build "${service}"
+docker compose up --detach "${service}"

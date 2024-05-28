@@ -1,0 +1,20 @@
+services:
+  reverse-proxy:
+    image: docker.io/library/traefik:v3.0
+    command: --api.insecure=true --providers.docker
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  git:
+    image: docker.io/charmcli/soft-serve:latest
+    labels:
+      - traefik.http.routers.git.rule=Host(`git.127-0-0-1.nip.io`)
+      - traefik.http.services.git.loadbalancer.server.port=23232 # HTTP
+
+  example-service:
+    build: ./data/source/example-service
+    labels:
+      - traefik.http.routers.example-service.rule=Host(`example.127-0-0-1.nip.io`)
