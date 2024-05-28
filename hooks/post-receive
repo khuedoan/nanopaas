@@ -9,4 +9,4 @@ service="$(basename "${PWD}")"
 cd ../../
 
 docker compose build "${service}"
-docker compose up --detach "${service}"
+docker compose up --detach
