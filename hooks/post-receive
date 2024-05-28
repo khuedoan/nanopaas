@@ -6,7 +6,11 @@ cd ..
 
 service="$(basename "${PWD}")"
 
-pack build --builder=heroku/builder:22 "${service}"
+docker run \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume "${PWD}:/workspace" \
+    --workdir /workspace \
+    buildpacksio/pack build --builder=heroku/builder:22 "${service}"
 
 cd ../../
 

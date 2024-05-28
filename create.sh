@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# TODO probably not needed from Docker 26
-
 set -eu
 
 app="${1}"

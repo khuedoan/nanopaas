@@ -7,8 +7,8 @@ You have a Linux machine with Docker installed. What's next?
 
 ## Server requirements
 
-- Public IP
-- A domain pointed to that IP
+- A server with public IP (most cloud providers offer a free tier with a small server)
+- A domain pointed to that IP (see below if you just need a free one for development)
 - SSH access
 - Software: `git`, `docker`
 - Firewall ports:
@@ -35,6 +35,7 @@ cd nanopaas
 2. Initialize your first project:
 
 ```sh
+#           name            branch
 ./create.sh example-service master
 ```
 
@@ -56,14 +57,19 @@ git remote add deploy git@<MY_SERVER>:</path/to/micropaas/data/source/example-se
 git push deploy
 ```
 
-Wanna deploy another app? Just repeat step 2 to 5 :)
+Wanna deploy another app? Just repeat steps 2 to 5 :)
 
 ## Backup
 
 You can use `rsync` to copy the entire `./data` directory to another server or your local machine, and you should be good to go.
 You should also create a cron job on your server to perform this task periodically.
 
-## Trade-offs
+## FAQ
 
-It's so simple that it should be sufficient for any hobby project.
-However, if you need high availability, more automation, etc., you'll need a bigger gun (e.g. Kubernetes).
+**What's the catch?**
+
+If you need advanced features such as high availability, more automation, or canary deployment, you'll need a bigger gun (e.g., Kubernetes).
+
+**Where can I get a free domain?**
+
+[duckdns.org](https://www.duckdns.org), [nip.io](https://nip.io), [sslip.io](https://sslip.io), etc.
